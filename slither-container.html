@@ -37,7 +37,6 @@ body {
     iframe.width = min;
     iframe.height = min;
   }
-
   window.onresize();
   
   var fsbutton = document.getElementById("fsbutton")
@@ -58,6 +57,8 @@ body {
       ;
       rfs.call(el);
     }
+    fsbutton.blur();
+	iframe.focus();
   }
 </script>
 </body>
