@@ -25,9 +25,12 @@ body {
 </head>
 <body>
 <button class="fsbutton" id="fsbutton">FULLSCREEN</button>
-<iframe class="slither-frame" id="slither" src="http://slither.io/"></iframe>
+<iframe class="slither-frame" id="slither" src="https://slither.io/"></iframe>
 <script type="text/javascript">
   var iframe = document.getElementById("slither")
+  iframe.onblur = function() {
+    iframe.focus()
+  }
 
   window.onresize = function() { 
     var min = Math.min(window.innerHeight, window.innerWidth);
@@ -37,7 +40,8 @@ body {
 
   window.onresize();
   
-  function toggleFullScreen() {
+  var fsbutton = document.getElementById("fsbutton")
+  fsbutton.onclick = function() {
     if (document.fullscreen || document.webkitIsFullScreen || document.mozFullScreen) {
       var efs = document.exitFullscreen
         || document.webkitExitFullscreen
@@ -55,9 +59,6 @@ body {
       rfs.call(el);
     }
   }
-  
-  var fsbutton = document.getElementById("fsbutton")
-  fsbutton.onclick = toggleFullScreen;
 </script>
 </body>
 </html>
