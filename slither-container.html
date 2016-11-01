@@ -11,20 +11,40 @@ body {
 	overflow: hidden;
 }
 
-.fsbutton {
+.brpanel {
 	position: fixed;
 	bottom: 0;
 	right: 0;
+}
+
+.clock {
+	font-weight: bold;
+	font-size: 200%;
+	color: darkred;
+	background-color: black;
+	margin: 2px;
+}
+
+.fsbutton {
+	font-weight: bold;
+	font-size: 125%;
+	color: lightgray;
+	background-color: black;
+	border: 0px;
 }
 
 .slither-frame {
 	border-width: 0px;
 }
 
-</style
+</style>
+<div style="font-family: 'Orbitron', sans-serif;">12:04PM</div>
 </head>
 <body>
-<button class="fsbutton" id="fsbutton">FULLSCREEN</button>
+<div class="brpanel">
+  <div class="clock" id="clock">12:00 AM</div>
+  <button class="fsbutton" id="fsbutton">FULLSCREEN</button>
+</div>
 <iframe class="slither-frame" id="slither" src="https://slither.io/"></iframe>
 <script type="text/javascript">
   var iframe = document.getElementById("slither")
@@ -60,6 +80,31 @@ body {
     fsbutton.blur();
 	iframe.focus();
   }
+  
+  var clock = document.getElementById('clock');
+  function setClock() { 
+    var d = new Date();
+    var nhour=d.getHours(), nmin=d.getMinutes(), ap;
+    if(nhour==0) {
+      ap=" AM";
+      nhour=12;
+    } else if (nhour<12) {
+      ap=" AM";
+    } else if (nhour==12) {
+      ap=" PM";
+    } else if (nhour > 12) {
+      ap=" PM";nhour-=12;
+    }
+
+    if (nmin<=9) {
+      nmin="0"+nmin;
+    }
+
+    clock.innerText = ""+nhour+":"+nmin+ap+"";
+  }
+
+  setClock();
+  setInterval(setClock, 1000);
 </script>
 </body>
 </html>
