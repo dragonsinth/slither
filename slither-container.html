@@ -84,23 +84,24 @@ body {
   var clock = document.getElementById('clock');
   function setClock() { 
     var d = new Date();
-    var nhour=d.getHours(), nmin=d.getMinutes(), ap;
-    if(nhour==0) {
+    var nhour = d.getHours(), nmin=d.getMinutes(), ap;
+    if(nhour == 0) {
       ap=" AM";
-      nhour=12;
-    } else if (nhour<12) {
+      nhour = 12;
+    } else if (nhour < 12) {
       ap=" AM";
-    } else if (nhour==12) {
+    } else if (nhour == 12) {
       ap=" PM";
     } else if (nhour > 12) {
-      ap=" PM";nhour-=12;
+      ap=" PM";
+      nhour-=12;
     }
 
     if (nmin<=9) {
-      nmin="0"+nmin;
+      nmin = "0" + nmin;
     }
 
-    clock.innerText = ""+nhour+":"+nmin+ap+"";
+    clock.innerText = "" + nhour + ":" + nmin + ap;
   }
 
   setClock();
