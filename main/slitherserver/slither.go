@@ -52,7 +52,6 @@ type GetIdRsp struct {
 }
 
 func getId(w http.ResponseWriter, r *http.Request) {
-	log.Println(r.URL)
 	if SetCorsHeaders(w.Header(), r) {
 		return
 	}
@@ -94,6 +93,8 @@ func getId(w http.ResponseWriter, r *http.Request) {
 	players[id] = player
 	server.players[id] = player
 
+	log.Printf("%s (%s) joined %s", player.name, player.pid, player.sid)
+
 	JsonRespond(w, &GetIdRsp{
 		Id: string(player.pid),
 	})
@@ -120,7 +121,6 @@ type UpdateRsp struct {
 }
 
 func update(w http.ResponseWriter, r *http.Request) {
-	log.Println(r.URL)
 	if SetCorsHeaders(w.Header(), r) {
 		return
 	}
@@ -181,6 +181,7 @@ func update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, gc := range playersToGc {
+		log.Printf("%s (%s) collected from %s", player.name, player.pid, player.sid)
 		delete(server.players, gc)
 		delete(players, gc)
 	}
