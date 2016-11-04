@@ -1,0 +1,79 @@
+body,div,input,textarea,blockquote,hr {
+	margin: 0px;
+	padding: 0px;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color: #FFFFFF;
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#container {
+    padding: 5px;
+    width: 250px;
+    display: block;
+    overflow: auto;
+    margin: 1px;
+    background-color: #DEDEDE;
+    text-shadow: 0 1px 1px #000;
+}
+
+.logo {
+    position: fixed;
+    left: 15px;
+    height: 20px;
+    width: auto;
+    margin-top: 3px;
+}
+
+.title {
+	font-size: 1.5em;
+	margin-bottom: 5px;
+	display: block;
+}
+
+hr {
+	opacity: 0.1;
+}
+
+.center {
+	text-align: center;
+}
+
+.off {
+	color: #ff0000 !important;
+    font-weight: bold;
+}
+
+.on {
+	color: #008C06 !important;
+    font-weight: bold;
+}
+
+.entry, .off, .on {
+	width: calc(100% - 10px);
+    height: auto;
+    padding: 5px;
+    cursor: pointer;
+    background: #fff;
+    color: #000;
+    text-shadow: initial;
+    border-radius: 4px;
+    box-shadow: 0 0 1px 1px #C9C9C9;
+}
+
+.entry:hover, .off:hover, .on:hover {
+	background-color: #C1C1C1;
+	box-shadow: 0 0 5px 1px #A7A7A7 inset;
+}
+
+.entry:active, .off:active, .on:active {
+	background-color: #A4A4A4;
+}
+
+hr {
+	margin: 1px;
+}
