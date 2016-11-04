@@ -205,11 +205,11 @@ func (p byScore) Less(i, j int) bool {
 	pj := p[j]
 	if pi.Score < pj.Score {
 		return true
+	} else if pi.Score > pj.Score {
+		return false
 	}
-	if pi.Name < pj.Name {
-		return true
-	}
-	return false
+
+	return pi.Name < pj.Name
 }
 func (p byScore) Swap(i, j int) {
 	p[i], p[j] = p[j], p[i]
