@@ -66,10 +66,6 @@ func getId(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "missing sId", http.StatusBadRequest)
 		return
 	}
-	if len(req.Name) == 0 {
-		http.Error(w, "missing name", http.StatusBadRequest)
-		return
-	}
 
 	mu.Lock()
 	defer mu.Unlock()
