@@ -1,3 +1,4 @@
+var mapServer = "http://slither.dragonsinth.com";
 var ipHUD = null;
 var fpsHUD = null;
 var friend_list = null;
@@ -274,7 +275,7 @@ function registerServer() {
     };
     $.ajax({
         type: "POST",
-        url: "http://slither.dragonsinth.com/getId",
+        url: mapServer + "/getId",
         // The key needs to match your method's input parameter (case-sensitive).
         data: JSON.stringify(req),
         contentType: "application/json; charset=utf-8",
@@ -323,7 +324,7 @@ function updateServer() {
 
     $.ajax({
         type: "POST",
-        url: "http://slither.dragonsinth.com/update",
+        url: mapServer + "/update",
         // The key needs to match your method's input parameter (case-sensitive).
         data: JSON.stringify(req),
         contentType: "application/json; charset=utf-8",
