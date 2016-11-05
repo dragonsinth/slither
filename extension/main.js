@@ -6,10 +6,18 @@ var friend_scores = null;
 var styleHUD = "color: #FFF; font-family: Arial, \"Helvetica Neue\" Helvetica, sans-serif; font-size: 12px; position: fixed; opacity: 0.35; z-index: 7;";
 var serverID = null;
 var playparty = false;
-var retry = 0;
 var f = false;
 var shortmenu = false;
 var uID = "";
+
+
+var nickColors = [
+    0xff0000, 0x00ff00, 0x40b0ff,
+    0xff8080, 0x80ffa0, 0x8080ff,
+    0x00ffff, 0xff00ff, 0xffff00,
+    0x00ff90, 0xff0080, 0xff8000
+];
+var nickColor = 0;
 
 function zoom(e) {
     if (!window.gsc) {
@@ -148,6 +156,36 @@ function setLogoMenu() {
         appendDiv2('txt_hud', 'nsi', window.generalstyle);
         jQuery('#tips').remove();
         jQuery('#lastscore').css('margin-top', '0px');
+
+        // Color picker.
+        var ifh = document.getElementById("playh");
+        if (ifh) {
+            var cp = document.createElement("div");
+            cp.style = "width: 240px; height: 20px; background: #FF0000; margin: auto; margin-top: 12px";
+            for (var i in nickColors) {
+                var span = document.createElement("span");
+                span.value = nickColors[i];
+                span.style = "width: 20px; height: 20px; float: left; border: 2px solid #404040;";
+                span.style.backgroundColor = toCssColor(nickColors[i]);
+                if (nickColor == span.value) {
+                    span.style.borderColor = "#FFFFFF"
+                }
+                cp.appendChild(span);
+            }
+            ifh.parentNode.insertBefore(cp, ifh);
+
+            cp.onclick = function (e) {
+                if (!e.target || e.target.nodeName != "SPAN") {
+                    return;
+                }
+                for (var i = 0; i < cp.children.length; i++) {
+                    cp.children[i].style.borderColor = "#404040";
+                }
+                e.target.style.borderColor = "#FFFFFF";
+                nickColor = e.target.value;
+                window.localStorage.setItem("nickcolor", nickColor);
+            };
+        }
     } else {
         setTimeout(setLogoMenu, 100);
     }
@@ -179,6 +217,15 @@ function loadOptions() {
         var nick = nickElem.value;
         window.localStorage.setItem("nick", nick);
     }, false);
+
+    var nickColorStr = window.localStorage.getItem("nickcolor");
+    if (nickColorStr) {
+        nickColor = parseInt(nickColorStr)
+    }
+    if (!nickColor) {
+        nickColor = nickColors[Math.floor(Math.random() * nickColors.length)];
+        window.localStorage.setItem("nickcolor", nickColor)
+    }
 }
 
 function getNickname() {
@@ -187,16 +234,6 @@ function getNickname() {
         nickElem = document.getElementById("nick")
     }
     return nickElem.value;
-}
-
-function connectionStatus() {
-    if (!window.connecting || retry == 10) {
-        window.forcing = false;
-        retry = 0;
-        return;
-    }
-    retry++;
-    setTimeout(connectionStatus, 1000);
 }
 
 function loadFPS() {
@@ -268,7 +305,7 @@ function registerServer() {
     var req = {
         "sid": serverID,
         "name": getNickname(),
-        "color": getNickcolor(),
+        "color": nickColor,
         x: window.view_xx,
         y: window.view_yy,
         score: getScore(),
@@ -405,19 +442,4 @@ function getScore() {
     } else {
         return 0;
     }
-}
-
-var nickColor = 0;
-function getNickcolor() {
-    var colors = [
-        0xff0000, 0x00ff00, 0x0000ff,
-        0xff7f7f, 0x7fff7f, 0x7f7fff,
-        0x00ffff, 0xff00ff, 0xffff00,
-        0x007fff, 0x7f00ff, 0x7fff00,
-        0x00ff7f, 0xff007f, 0xff7f00
-    ];
-    if (!nickColor) {
-        nickColor = colors[Math.floor(Math.random() * colors.length)];
-    }
-    return nickColor;
 }
