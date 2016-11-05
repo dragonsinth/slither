@@ -154,6 +154,7 @@ function setLogoMenu() {
         appendDiv2('txt_die', 'nsi', window.generalstyle);
         appendDiv2('txt_boost', 'nsi', window.generalstyle);
         appendDiv2('txt_hud', 'nsi', window.generalstyle);
+        jQuery('#plq').remove(); // blocks team select and color picker
         jQuery('#tips').remove();
         jQuery('#lastscore').css('margin-top', '0px');
 
