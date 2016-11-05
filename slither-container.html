@@ -1,110 +1,122 @@
 <!DOCTYPE html>
 <html>
-<style>
-html, body {height:100%;}
-html {display:table; width:100%;}
-body {
-	display:table-cell;
-	text-align:center;
-	vertical-align:middle;
-	background-color: black;
-	overflow: hidden;
-}
+<head>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
 
-.brpanel {
-	position: fixed;
-	bottom: 0;
-	right: 0;
-}
+        html {
+            width: 100%;
+        }
 
-.clock {
-	font-weight: bold;
-	font-size: 200%;
-	color: darkred;
-	background-color: black;
-	margin: 2px;
-}
+        body {
+            text-align: center;
+            vertical-align: middle;
+            background-color: black;
+            overflow: hidden;
+        }
 
-.fsbutton {
-	font-weight: bold;
-	font-size: 125%;
-	color: lightgray;
-	background-color: black;
-	border: 0px;
-}
+        .brpanel {
+            position: fixed;
+            bottom: 2px;
+            right: 2px;
+            opacity: 0.4;
+            background-color: transparent;
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
 
-.slither-frame {
-	border-width: 0px;
-}
+        .clock {
+            font-weight: bold;
+            font-size: 200%;
+            color: red;
+            cursor: default;
+        }
 
-</style>
+        .fsbutton {
+            font-weight: bold;
+            font-size: 130%;
+            color: lightgray;
+            cursor: pointer;
+            border: 0;
+        }
+
+        .slither-frame {
+            border: 0;
+        }
+
+    </style>
 </head>
 <body>
 <div class="brpanel">
-  <div class="clock" id="clock">12:00 AM</div>
-  <button class="fsbutton" id="fsbutton">FULLSCREEN</button>
+    <div class="clock" id="clock">12:00 AM</div>
+    <div class="fsbutton" id="fsbutton">FULLSCREEN</div>
 </div>
 <iframe class="slither-frame" id="slither" src="https://slither.io/"></iframe>
 <script type="text/javascript">
-  var iframe = document.getElementById("slither")
-  iframe.onblur = function() {
-    iframe.focus()
-  }
+    var iframe = document.getElementById("slither");
+    iframe.onblur = function () {
+        iframe.focus()
+    };
 
-  window.onresize = function() { 
-    var min = Math.min(window.innerHeight, window.innerWidth);
-    iframe.width = min;
-    iframe.height = min;
-  }
-  window.onresize();
-  
-  var fsbutton = document.getElementById("fsbutton")
-  fsbutton.onclick = function() {
-    if (document.fullscreen || document.webkitIsFullScreen || document.mozFullScreen) {
-      var efs = document.exitFullscreen
-        || document.webkitExitFullscreen
-        || document.mozCancelFullScreen
-        || document.msExitFullscreen 
-      ;
-      efs.call(document);
-    } else {
-      var el = document.documentElement;
-      var rfs = el.requestFullscreen
-        || el.webkitRequestFullScreen
-        || el.mozRequestFullScreen
-        || el.msRequestFullscreen 
-      ;
-      rfs.call(el);
+    window.onresize = function () {
+        var min = Math.min(window.innerHeight, window.innerWidth);
+        iframe.width = min;
+        iframe.height = min;
+    };
+    window.onresize();
+
+    var fsbutton = document.getElementById("fsbutton");
+    fsbutton.onclick = function () {
+        if (document.fullscreen || document.webkitIsFullScreen || document.mozFullScreen) {
+            var efs = document.exitFullscreen
+                            || document.webkitExitFullscreen
+                            || document.mozCancelFullScreen
+                            || document.msExitFullscreen
+                    ;
+            efs.call(document);
+        } else {
+            var el = document.documentElement;
+            var rfs = el.requestFullscreen
+                            || el.webkitRequestFullScreen
+                            || el.mozRequestFullScreen
+                            || el.msRequestFullscreen
+                    ;
+            rfs.call(el);
+        }
+        fsbutton.blur();
+        iframe.focus();
+    };
+
+    var clock = document.getElementById('clock');
+    function setClock() {
+        var d = new Date();
+        var nhour = d.getHours(), nmin = d.getMinutes(), ap;
+        if (nhour == 0) {
+            ap = " AM";
+            nhour = 12;
+        } else if (nhour < 12) {
+            ap = " AM";
+        } else if (nhour == 12) {
+            ap = " PM";
+        } else if (nhour > 12) {
+            ap = " PM";
+            nhour -= 12;
+        }
+
+        if (nmin <= 9) {
+            nmin = "0" + nmin;
+        }
+
+        clock.innerText = "" + nhour + ":" + nmin + ap;
     }
-    fsbutton.blur();
-	iframe.focus();
-  }
-  
-  var clock = document.getElementById('clock');
-  function setClock() { 
-    var d = new Date();
-    var nhour = d.getHours(), nmin=d.getMinutes(), ap;
-    if(nhour == 0) {
-      ap=" AM";
-      nhour = 12;
-    } else if (nhour < 12) {
-      ap=" AM";
-    } else if (nhour == 12) {
-      ap=" PM";
-    } else if (nhour > 12) {
-      ap=" PM";
-      nhour-=12;
-    }
 
-    if (nmin<=9) {
-      nmin = "0" + nmin;
-    }
-
-    clock.innerText = "" + nhour + ":" + nmin + ap;
-  }
-
-  setClock();
-  setInterval(setClock, 1000);
+    setClock();
+    setInterval(setClock, 1000);
 </script>
 </body>
 </html>
