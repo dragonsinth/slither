@@ -59,7 +59,7 @@ function updateHudVis() {
 function init() {
     removeFrames();
     appendDiv("friend-list", "nsi", styleHUD + "opacity: 0.7; left: 8px; bottom: 76px; width: 150px; line-height: 150%");
-    appendDiv("friend-scores", "nsi", styleHUD + "opacity: 0.7; left: 158px; bottom: 76px; width: 50px; line-height: 150%");
+    appendDiv("friend-scores", "nsi", styleHUD + "opacity: 0.7; left: 172px; bottom: 76px; width: 50px; line-height: 150%");
     appendDiv("fps-hud", "nsi", styleHUD + "left: 8px; bottom: 58px;");
     appendDiv("ip-hud", "nsi", styleHUD + "font-size: 14px; position: fixed; opacity: 1; left: 8px; bottom: 40px;");
     friend_list = document.getElementById("friend-list");
@@ -375,6 +375,11 @@ function updateServer() {
 }
 
 function updateFriends(data) {
+    if (!window.playing) {
+        // Just clear the everything.
+        data = {players: []}
+    }
+
     clearMap();
     for (var i in data.players) {
         var p = data.players[i];
@@ -386,11 +391,17 @@ function updateFriends(data) {
     for (var i in data.players) {
         var p = data.players[i];
 
+        function makeFriendDiv() {
+            var div = document.createElement("div");
+            div.style = "white-space: nowrap; overflow: hidden;";
+            return div;
+        }
+
         if (friend_list.children.length <= i) {
-            friend_list.appendChild(document.createElement("div"));
+            friend_list.appendChild(makeFriendDiv());
         }
         if (friend_scores.children.length <= i) {
-            friend_scores.appendChild(document.createElement("div"));
+            friend_scores.appendChild(makeFriendDiv());
         }
 
         friend_list.children[i].textContent = p.name;
