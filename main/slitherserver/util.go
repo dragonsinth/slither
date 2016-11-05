@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
+	"github.com/dragonsinth/slither"
 	"log"
 	"net/http"
 )
@@ -12,15 +14,27 @@ func JsonRespond(w http.ResponseWriter, rsp interface{}) {
 
 	if err := json.NewEncoder(w).Encode(rsp); err != nil {
 		log.Printf("failed to json-encode response: %s", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		httpError(w, http.StatusInternalServerError)
 		return
+	}
+}
+
+// Send a pretty-printed JSON response.  Sends a 500 if rsp could not be json encoded.
+func JsonRespondPretty(w http.ResponseWriter, rsp interface{}) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+
+	if data, err := json.MarshalIndent(rsp, "", "  "); err != nil {
+		log.Printf("failed to json-encode response: %s", err)
+		httpError(w, http.StatusInternalServerError)
+	} else {
+		w.Write(data)
 	}
 }
 
 // Parse a JSON request.  Returns true if the request could be parsed, otherwise serves a 4XX.
 func ReadJson(w http.ResponseWriter, r *http.Request, dst interface{}) bool {
 	if r.Method != "POST" && r.Method != "PUT" {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		httpError(w, http.StatusMethodNotAllowed)
 		return false
 	}
 
@@ -29,7 +43,7 @@ func ReadJson(w http.ResponseWriter, r *http.Request, dst interface{}) bool {
 	decoder := json.NewDecoder(r.Body)
 	decoder.UseNumber()
 	if err := decoder.Decode(dst); err != nil {
-		http.Error(w, "could not parse request", http.StatusBadRequest)
+		httpError(w, http.StatusBadRequest)
 		return false
 	}
 
@@ -47,4 +61,20 @@ func SetCorsHeaders(rspHdrs http.Header, r *http.Request) bool {
 	}
 
 	return false
+}
+
+func httpError(w http.ResponseWriter, code int) {
+	http.Error(w, http.StatusText(code), code)
+}
+
+func httpGet(resource string, contentType string, w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		httpError(w, http.StatusMethodNotAllowed)
+		return
+	}
+
+	data := slither.MustAsset(resource)
+	info, _ := slither.AssetInfo(resource)
+	w.Header().Add("Content-Type", contentType)
+	http.ServeContent(w, r, resource, info.ModTime(), bytes.NewReader(data))
 }

@@ -39,8 +39,8 @@ func newId() string {
 }
 
 type GetIdReq struct {
-	Sid   string  `json:"sid"`
-	Name  string  `json:"name"`
+	Sid   string  `json:"sid,omitempty"`
+	Name  string  `json:"name,omitempty"`
 	Color uint32  `json:"color"`
 	X     float64 `json:"x"`
 	Y     float64 `json:"y"`
@@ -62,7 +62,7 @@ func getId(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(req.Sid) == 0 {
-		http.Error(w, "missing sId", http.StatusBadRequest)
+		http.Error(w, "missing sid", http.StatusBadRequest)
 		return
 	}
 
@@ -101,7 +101,7 @@ func getId(w http.ResponseWriter, r *http.Request) {
 }
 
 type UpdateReq struct {
-	Id    string  `json:"id"`
+	Id    string  `json:"id,omitempty"`
 	X     float64 `json:"x"`
 	Y     float64 `json:"y"`
 	Score int32   `json:"score"`
@@ -113,7 +113,7 @@ type PlayerStatus struct {
 	X     float64 `json:"x"`
 	Y     float64 `json:"y"`
 	Score int32   `json:"score"`
-	IsMe  bool    `json:"is_me"`
+	IsMe  bool    `json:"is_me,omitempty"`
 }
 
 type UpdateRsp struct {
@@ -212,11 +212,82 @@ func (p byScore) Swap(i, j int) {
 	p[i], p[j] = p[j], p[i]
 }
 
+type PlayerListEntry struct {
+	Name   string `json:"name"`
+	Server string `json:"server,omitempty"`
+	Score  int32  `json:"score"`
+}
+
+func playerList(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		httpError(w, http.StatusMethodNotAllowed)
+		return
+	}
+
+	mu.Lock()
+	defer mu.Unlock()
+
+	now := time.Now()
+	results := []PlayerListEntry{}
+	for _, player := range players {
+		// Omit players who haven't posted in 5 seconds or are dead.
+		if player.lastScore == 0 || player.lastUpdate.Before(now.Add(-5*time.Second)) {
+			continue
+		}
+
+		results = append(results, PlayerListEntry{
+			Name:   player.name,
+			Server: string(player.sid),
+			Score:  player.lastScore,
+		})
+	}
+
+	sort.Sort(byServerByScore(results))
+	JsonRespondPretty(w, results)
+}
+
+type byServerByScore []PlayerListEntry
+
+func (p byServerByScore) Len() int {
+	return len(p)
+}
+func (p byServerByScore) Less(i, j int) bool {
+	pi := p[i]
+	pj := p[j]
+
+	if pi.Server < pj.Server {
+		return true
+	} else if pi.Server > pj.Server {
+		return false
+	}
+
+	if pi.Score > pj.Score { // descending
+		return true
+	} else if pi.Score < pj.Score {
+		return false
+	}
+
+	return pi.Name < pj.Name
+}
+func (p byServerByScore) Swap(i, j int) {
+	p[i], p[j] = p[j], p[i]
+}
+
 func main() {
 	addr := flag.String("addr", ":8080", "http service address")
 	flag.Parse()
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			http.NotFound(w, r)
+			return
+		}
+		httpGet("slither-container.html", "text/html; charset=utf-8", w, r)
+	})
+
 	http.HandleFunc("/getId", getId)
 	http.HandleFunc("/update", update)
+	http.HandleFunc("/playerList", playerList)
 	err := http.ListenAndServe(*addr, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
