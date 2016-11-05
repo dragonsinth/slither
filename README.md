@@ -7,9 +7,9 @@ This is a Chrome extension that enables enhanced teamplay.  See your friends' ma
 ### Features
 
 - See friends' map location and score!
-- Zoom in and out with the scroll wheel or 'N'/'M'.  Press `X` to reset zoom.
-- Press 'Q' to die.
-- Press 'H' to show/hide help.
+- Zoom in and out with the scroll wheel or `N`/`M`.  Press `X` to reset zoom.
+- Press `Q` to die.
+- Press `H` to show/hide help.
 
 
 ### Installing
