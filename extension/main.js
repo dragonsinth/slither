@@ -58,10 +58,10 @@ function updateHudVis() {
 
 function init() {
     removeFrames();
-    appendDiv("friend-list", "nsi", styleHUD + "opacity: 0.7; left: 8px; bottom: 70px; width: 150px; line-height: 150%");
-    appendDiv("friend-scores", "nsi", styleHUD + "opacity: 0.7; left: 158px; bottom: 70px; width: 50px; line-height: 150%");
-    appendDiv("fps-hud", "nsi", styleHUD + "left: 8px; bottom: 52px;");
-    appendDiv("ip-hud", "nsi", styleHUD + "left: 8px; bottom: 38px;");
+    appendDiv("friend-list", "nsi", styleHUD + "opacity: 0.7; left: 8px; bottom: 76px; width: 150px; line-height: 150%");
+    appendDiv("friend-scores", "nsi", styleHUD + "opacity: 0.7; left: 158px; bottom: 76px; width: 50px; line-height: 150%");
+    appendDiv("fps-hud", "nsi", styleHUD + "left: 8px; bottom: 58px;");
+    appendDiv("ip-hud", "nsi", styleHUD + "font-size: 14px; position: fixed; opacity: 1; left: 8px; bottom: 40px;");
     friend_list = document.getElementById("friend-list");
     friend_scores = document.getElementById("friend-scores");
     ipHUD = document.getElementById("ip-hud");
@@ -258,9 +258,9 @@ function updateLoop() {
     updateHudVis();
 
     if (serverID) {
-        ipHUD.textContent = "Friends Id: " + getServerStr();
+        ipHUD.innerHTML = '<span style="opacity: .4;">Friends Id: </span><span style="opacity: .6; font-weight: bold; color: #ffff00">' + getServerStr() + '</span></span>';
     } else {
-        ipHUD.textContent = "";
+        ipHUD.innerHTML = "";
     }
 
     updateServer();
