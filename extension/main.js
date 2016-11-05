@@ -382,24 +382,27 @@ function updateFriends(data) {
         }
     }
 
-    while (friend_list.firstChild) {
-        friend_list.removeChild(friend_list.firstChild);
-    }
-    while (friend_scores.firstChild) {
-        friend_scores.removeChild(friend_scores.firstChild);
-    }
     for (var i in data.players) {
         var p = data.players[i];
-        var fn = document.createElement("span");
-        fn.textContent = p.name;
-        fn.style.color = toCssColor(p.color);
-        friend_list.appendChild(fn);
-        friend_list.appendChild(document.createElement("br"));
-        var fs = document.createElement("span");
-        fs.textContent = p.score;
-        fs.style.color = toCssColor(p.color);
-        friend_scores.appendChild(fs);
-        friend_scores.appendChild(document.createElement("br"));
+
+        if (friend_list.children.length <= i) {
+            friend_list.appendChild(document.createElement("div"));
+        }
+        if (friend_scores.children.length <= i) {
+            friend_scores.appendChild(document.createElement("div"));
+        }
+
+        friend_list.children[i].textContent = p.name;
+        friend_list.children[i].style.color = toCssColor(p.color);
+        friend_scores.children[i].textContent = p.score;
+        friend_scores.children[i].style.color = toCssColor(p.color);
+    }
+
+    while (friend_list.children.length > data.players.length) {
+        friend_list.removeChild(friend_list.lastChild);
+    }
+    while (friend_scores.children.length > data.players.length) {
+        friend_scores.removeChild(friend_scores.lastChild);
     }
 }
 
