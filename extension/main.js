@@ -3,7 +3,7 @@ var ipHUD = null;
 var fpsHUD = null;
 var friend_list = null;
 var friend_scores = null;
-var styleHUD = "color: #FFF; font-family: Arial, \"Helvetica Neue\" Helvetica, sans-serif; font-size: 12px; position: fixed; opacity: 0.35; z-index: 7;";
+var styleHUD = "position: fixed; color: #FFF; font-family: Arial, \"Helvetica Neue\" Helvetica, sans-serif; font-size: 12px; overflow: hidden; opacity: 0.7; z-index: 7; display: inline; cursor: default; line-height: 150%;";
 var serverID = null;
 var playparty = false;
 var f = false;
@@ -61,10 +61,10 @@ function updateHudVis() {
 
 function init() {
     removeFrames();
-    appendDiv("friend-list", "nsi", styleHUD + "opacity: 0.7; left: 8px; bottom: 76px; width: 150px; line-height: 150%");
-    appendDiv("friend-scores", "nsi", styleHUD + "opacity: 0.7; left: 172px; bottom: 76px; width: 50px; line-height: 150%");
-    appendDiv("fps-hud", "nsi", styleHUD + "left: 8px; bottom: 58px;");
-    appendDiv("ip-hud", "nsi", styleHUD + "font-size: 14px; position: fixed; opacity: 1; left: 8px; bottom: 40px;");
+    appendDiv("friend-list", "nsi", styleHUD + "left: 8px; bottom: 76px; width: 150px;");
+    appendDiv("friend-scores", "nsi", styleHUD + "left: 172px; bottom: 76px; width: 50px;");
+    appendDiv("fps-hud", "nsi", styleHUD + "opacity: 0.35; left: 8px; bottom: 58px;");
+    appendDiv("ip-hud", "nsi", styleHUD + "font-size: 14px; opacity: 1; left: 8px; bottom: 40px;");
     friend_list = document.getElementById("friend-list");
     friend_scores = document.getElementById("friend-scores");
     ipHUD = document.getElementById("ip-hud");
@@ -158,7 +158,7 @@ function setLogoMenu() {
     var login = document.getElementById("login");
     if (login) {
         loadOptions();
-        jQuery('body').append('<div id="bots_menu_options" style="position:fixed;top:2px;z-index:7;left:5px;"></div>');
+        jQuery('body').append('<div id="bots_menu_options" style="position:fixed;top:2px;z-index:7;left:5px;opacity:0.5;cursor:default;"></div>');
         window.generalstyle = 'color: #FFF; font-family: Consolas, Verdana; font-size: 13px;';
         appendDiv2('txt_hide_menu', 'nsi', window.generalstyle);
         appendDiv2('txt_zoomkey', 'nsi', window.generalstyle);
