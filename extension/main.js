@@ -42,12 +42,18 @@ function removeFrames() {
     var frames = document.getElementsByTagName("iframe");
     for (var i = frames.length - 1; i >= 0; i--) {
         var frame = frames[i];
-        if (frame.src.startsWith("http://imasdk.googleapis.com")) {
-            // If this is removed, restarting after death sometimes freezes.
-            continue;
-        }
         frame.parentNode.removeChild(frame);
     }
+
+    // Removing all frames will hang between games unless we replace the ads controller.
+    window.adsController = {
+        initialize: function () {
+        },
+        requestAds: function () {
+            window.shoa = false;
+            window.play_count = 0;
+        }
+    };
 }
 
 var hudShouldVis = true;
