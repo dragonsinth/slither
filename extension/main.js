@@ -10,12 +10,16 @@ var f = false;
 var shortmenu = false;
 var uID = "";
 
-
 var nickColors = [
-    0xff0000, 0x00ff00, 0x40b0ff,
-    0xff8080, 0x80ffa0, 0x8080ff,
-    0x00ffff, 0xff00ff, 0xffff00,
-    0x00ff90, 0xff0080, 0xff8000
+    0xc080ff,
+    0x80ff80,
+    0xeeee70,
+    0xe030e0,
+    0xff4040,
+    0xffa060,
+    0x80d0d0,
+    0xff9090,
+    0x9099ff
 ];
 var nickColor = 0;
 
@@ -162,7 +166,7 @@ function setLogoMenu() {
         var ifh = document.getElementById("playh");
         if (ifh) {
             var cp = document.createElement("div");
-            cp.style = "width: 240px; height: 20px; background: #FF0000; margin: auto; margin-top: 12px";
+            cp.style = "width: 180px; height: 20px; background: #FF0000; margin: auto; margin-top: 12px";
             for (var i in nickColors) {
                 var span = document.createElement("span");
                 span.value = nickColors[i];
