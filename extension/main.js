@@ -28,15 +28,14 @@ function zoom(e) {
         return;
     }
     e.preventDefault();
-    window.lvz *= Math.pow(0.93, e.wheelDelta / -120 || e.detail / 2 || 0);
-    window.lvz > 2 ? window.lvz = 2 : window.lvz < 0.1 ? window.lvz = 0.1 : null;
-    window.gsc = window.lvz;
+    gsc *= Math.pow(0.93, e.wheelDelta / -120 || e.detail / 2 || 0);
+    gsc > 2 ? gsc = 2 : gsc < 0.2 ? gsc = 0.2 : null;
 }
 
 function zoomByKey(key) {
     var fzoom = key ? -2 : 2;
-    window.lvz *= Math.pow(0.9, fzoom);
-    window.lvz > 2 ? window.lvz = 2 : window.lvz < 0.1 ? window.lvz = 0.1 : null;
+    gsc *= Math.pow(0.9, fzoom);
+    gsc > 2 ? gsc = 2 : gsc < 0.2 ? gsc = 0.2 : null;
 }
 
 function removeFrames() {
@@ -76,7 +75,6 @@ function init() {
     } else {
         document.body.onmousewheel = zoom;
     }
-    window.lvz = window.sgsc;
     window.onkeydown = function (e) {
         if (window.playing && $("#ownmessage").is(":focus") === false) {
             switch (e.keyCode) {
@@ -89,8 +87,11 @@ function init() {
                     gameOver();
                     break;
                 case 88://X
-                    gsc = 0.9;
-                    window.lvz = 0.9;
+                    if (window.snake) {
+                        gsc = .5 + .4 / Math.max(1, (window.snake.sct + 16) / 36); // Copied from game.
+                    } else {
+                        gsc = 0.9
+                    }
                     break;
                 case 16://Shift
                     setAcceleration(true);
@@ -353,7 +354,7 @@ function updateServer() {
         id: uID,
         x: window.view_xx,
         y: window.view_yy,
-        score: getScore(),
+        score: getScore()
     };
 
     if (!window.playing) {
