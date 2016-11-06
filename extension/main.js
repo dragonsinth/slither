@@ -5,6 +5,7 @@ var friend_list = null;
 var friend_scores = null;
 var styleHUD = "position: fixed; color: #FFF; font-family: Arial, \"Helvetica Neue\" Helvetica, sans-serif; font-size: 12px; overflow: hidden; opacity: 0.7; z-index: 7; display: inline; cursor: default; line-height: 150%;";
 var serverID = null;
+var mouseCursorCoverDiv = null;
 var playparty = false;
 var f = false;
 var shortmenu = false;
@@ -75,6 +76,10 @@ function init() {
     friend_scores = document.getElementById("friend-scores");
     ipHUD = document.getElementById("ip-hud");
     fpsHUD = document.getElementById("fps-hud");
+
+    mouseCursorCoverDiv = document.createElement("div");
+    mouseCursorCoverDiv.style = "position: fixed; left: 0px; top: 0px; bottom: 0px; right: 0px; z-index: 9999; opacity: 0; cursor: crosshair;";
+
     scoresList = $('div.nsi').filter(function () {
         var self = $(this);
         return self.width() === 30 &&
@@ -511,14 +516,24 @@ function updateColorCapture() {
         newColors[color] = 1;
         console.log(toCssColor(color));
     }
-    if (wasPlaying && !window.playing) {
+
+    var inGame = window.playing && !window.choosing_skin && window.snake && !window.snake.dead;
+
+    if (wasPlaying && !inGame) {
         var nc = JSON.stringify(newColors);
         if (nc != "{}") {
             //window.alert("New colors!: " + nc);
             console.log(nc);
         }
     }
-    wasPlaying = window.playing;
+
+    if (wasPlaying && !inGame && mouseCursorCoverDiv.parentNode) {
+        document.body.removeChild(mouseCursorCoverDiv);
+    } else if (!wasPlaying && inGame && !mouseCursorCoverDiv.parentNode) {
+        document.body.appendChild(mouseCursorCoverDiv);
+    }
+
+    wasPlaying = inGame;
 }
 
 init();
