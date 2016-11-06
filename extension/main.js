@@ -69,6 +69,13 @@ function init() {
     friend_scores = document.getElementById("friend-scores");
     ipHUD = document.getElementById("ip-hud");
     fpsHUD = document.getElementById("fps-hud");
+    scoresList = $('div.nsi').filter(function () {
+        var self = $(this);
+        return self.width() === 30 &&
+            self.height() === 800 &&
+            self.css('top') === '32px' &&
+            self.css('right') === '230px';
+    })[0];
 
     if (/firefox/i.test(navigator.userAgent)) {
         document.addEventListener("DOMMouseScroll", zoom, false);
@@ -262,6 +269,7 @@ function updateLoop() {
 
     updateOptions();
     updateHudVis();
+    updateColorCapture();
 
     if (serverID) {
         ipHUD.innerHTML = '<span style="opacity: .4;">Friends Id: </span><span style="opacity: .6; font-weight: bold; color: #ffff00">' + getServerStr() + '</span></span>';
@@ -290,8 +298,6 @@ function gameOver() {
         window.play_btn.setEnabled(!0);
     }
 }
-
-init();
 
 function updateOptions() {
     var generalStyle = '<span style = "opacity: 0.8;">';
@@ -463,3 +469,50 @@ function getScore() {
         return 0;
     }
 }
+
+// Color capture feature.
+var scoresList = null;
+var colorMatchRegex = /(.*?)rgb\((\d+), (\d+), (\d+)\)/;
+var wasPlaying = false;
+var allColors = null;
+var newColors = {};
+
+function colorToInt(color) {
+    var digits = colorMatchRegex.exec(color);
+
+    var red = parseInt(digits[2]);
+    var green = parseInt(digits[3]);
+    var blue = parseInt(digits[4]);
+
+    return (red << 16) | (green << 8) | blue;
+}
+
+function updateColorCapture() {
+    if (!allColors) {
+        allColors = {};
+        for (var i in nickColors) {
+            allColors[nickColors[i]] = 1;
+        }
+    }
+
+    for (var i = 0; i < scoresList.children.length; i += 2) {
+        var span = scoresList.children[i];
+        var color = colorToInt(span.style.color);
+        if (allColors[color]) {
+            continue;
+        }
+        allColors[color] = 1;
+        newColors[color] = 1;
+        console.log(toCssColor(color));
+    }
+    if (wasPlaying && !window.playing) {
+        var nc = JSON.stringify(newColors);
+        if (nc != "{}") {
+            //window.alert("New colors!: " + nc);
+            console.log(nc);
+        }
+    }
+    wasPlaying = window.playing;
+}
+
+init();
