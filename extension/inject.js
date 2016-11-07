@@ -18,6 +18,11 @@ function myMain(evt) {
             css.type = 'text/css';
             css.media = 'screen';
             document.getElementsByTagName('head')[0].appendChild(css);
+
+            var meta = document.createElement('meta');
+            meta.name = "dragonslither";
+            meta.content = chrome.extension.getURL("");
+            document.getElementsByTagName('head')[0].appendChild(meta);
         }
     });
 }

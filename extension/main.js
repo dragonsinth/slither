@@ -210,6 +210,45 @@ function setLogoMenu() {
                 window.localStorage.setItem("nickcolor", nickColor);
             };
         }
+
+        // Ultra low quality render.
+        function setRender(qual) {
+            localStorage.setItem("qual", qual);
+            switch (qual) {
+                case "0":
+                    grqi.src = "/s/highquality.png";
+                    want_quality = 1;
+                    render_mode = 2;
+                    break;
+                case "1":
+                    grqi.src = "/s/lowquality.png";
+                    want_quality = 0;
+                    render_mode = 2;
+                    break;
+                default:
+                    localStorage.setItem("qual", "2");
+                    var baseUrl = $("meta[name='dragonslither']").attr("content");
+                    grqi.src = baseUrl + "ultralowquality.png";
+                    want_quality = 0;
+                    render_mode = 1;
+                    break;
+            }
+        }
+
+        grq.onclick = function () {
+            switch (localStorage.getItem("qual")) {
+                case "0":
+                    setRender("1");
+                    break;
+                case "1":
+                    setRender("2");
+                    break;
+                default:
+                    setRender("0");
+                    break;
+            }
+        }
+        setRender(localStorage.getItem("qual"));
     } else {
         setTimeout(setLogoMenu, 100);
     }
