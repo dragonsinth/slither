@@ -29,4 +29,4 @@ You and your friends will need to use the same Slither Friends id.  The first pl
 
 Separately from the extension, [slither-container.html](slither-container.html) is a simple web page that runs slither.io in a square container, so that you always have maximum visibity.  There's also a fullscreen button to put the game in true fullscreen.
 
-Hosted at http://dragonsinth.slither.com
+Hosted at http://slither.dragonsinth.com/
