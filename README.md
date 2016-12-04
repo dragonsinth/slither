@@ -2,7 +2,7 @@
 
 ## extension for slither.io
 
-This is a Chrome extension that enables enhanced teamplay.  See your friends' map location and score in game. This extension is based on the slither-io.com mod, but stripped out a lot of things I didn't like and streamlined the teamplay.  In addition, this extension withs with the popular Slither Friends extension.
+Chrome extension that enables enhanced teamplay on http://slither.io.  See your friends' map location and score in game. Based on the slither-io.com mod, but I stripped out a lot of things I didn't like and streamlined the teamplay. :)
 
 ### Features
 
@@ -11,10 +11,12 @@ This is a Chrome extension that enables enhanced teamplay.  See your friends' ma
 - Press `Q` to die.
 - Press `H` to show/hide help.
 
-
 ### Installing
 
 - First, install the [Slither Friends extension](https://chrome.google.com/webstore/detail/%F0%9F%90%8D-slither-friends-by-cre/acmckabjkfogakcfhckahnpmbjfncafn).  Slither Friends is required for teamplay to work.
+- Then install [dragon-slither](https://chrome.google.com/webstore/detail/dragon-slither/jkedfiaoijngpipbgkojaielgklfcgcn).
+
+### Hacking
 - Clone this repository to your local machine, `git clone https://github.com/dragonsinth/slither`
 - Go to chrome://extensions/ and enabled `Developer mode`.
 - Click `Load unpacked extension...` and select the directory named `extension` in your cloned git repo.
